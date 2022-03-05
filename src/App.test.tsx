@@ -1,9 +1,11 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { fireEvent, render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("renders user data", async () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const button = screen.getByText(/Get user/i);
+  fireEvent.click(button);
+
+  const txtUsername = await screen.findByText(/The Octocat/i);
+  expect(txtUsername).toBeInTheDocument();
 });

@@ -1,24 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+type User = {
+  name: string;
+  followers: string;
+  following: string;
+};
 
 function App() {
+  const [user, setUser] = useState<User | null>(null);
+  const [userName, setUserName] = useState<string>("octocat");
+  const getUser = () => {
+    fetch(`https://api.github.com/users/${userName}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        setUser(data);
+      });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        type="text"
+        value="octocat"
+        onChange={(e) => setUserName(e.target.value)}
+      />
+      <button onClick={() => getUser()}>Get user</button>
+      {user && (
+        <>
+          <h1>{user.name}</h1>
+          <span>Followers: {user.followers}</span>
+          <br />
+          <span>Following: {user.following}</span>
+        </>
+      )}
     </div>
   );
 }
